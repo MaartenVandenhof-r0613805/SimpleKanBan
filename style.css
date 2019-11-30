@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
+#board {
+    height: 90%;
+    width: 95%;
+    background: #fff;
+    border-radius: 5px;
+    display: none;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+
+body {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f0f0f0;
+    font-family: 'Roboto Slab';
+}
+
+html {
+    height: 100%;
+}
+
+.column {
+    min-width: 200px;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.column h1 {
+    color: #fff;
+    min-height: 30px;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #9a9a9a;
+}
+
+.story {
+    width: 90%;
+    min-height: 50px;
+    max-height: 150px;
+    margin: 5% 2%;
+    background: #507ee8;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    overflow-y: hidden;
+}
+
+.story h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    height: 30%;
+    max-height: 25px;
+    border-bottom: 1px solid #fff;
+    width: 95%;
+}
+
+.story p {
+    font-size: 0.8em;
+    padding: 2%;
+    color: #fff;
+}
+
+#createProject {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    width: 60%;
+    min-height: 200px;
+    border-radius: 5px;
+}
+
+#createProject h1 {
+    background: #495eff;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    min-height: 25px;
+    height: 10%;
+}
+
+#createProject * {
+    margin-bottom: 10px;
+}
+#columns {
+    justify-content: flex-start;
+    align-items: center;
+    width: 70%;
+    overflow: scroll;
+}
