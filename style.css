@@ -104,3 +104,18 @@ html {
     width: 70%;
     overflow: scroll;
 }
+
+#details {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    width: 500px;
+    height: 250px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border: 2px solid lightblue;
+    border-radius: 5px;
+}
