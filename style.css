@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
 
 #board {
-    height: 90%;
+    height: 85%;
     width: 95%;
     background: #fff;
     border-radius: 5px;
     display: none;
     flex-direction: row;
-    overflow-x: scroll;
+    box-shadow:  3px 3px 5px 1px #6a6a6a;
 }
 
 body {
@@ -37,21 +37,22 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #9a9a9a;
+    background: #495eff;
 }
 
 .story {
     width: 90%;
-    min-height: 50px;
+    min-height: 70px;
     max-height: 150px;
     margin: 5% 2%;
+    padding: 1%;
     background: #507ee8;
     border-radius: 5px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
     overflow-y: hidden;
+    flex-direction: column;
 }
 
 .story h2 {
@@ -62,7 +63,7 @@ html {
     height: 30%;
     max-height: 25px;
     border-bottom: 1px solid #fff;
-    width: 95%;
+    width: 100%;
 }
 
 .story p {
@@ -80,6 +81,7 @@ html {
     width: 60%;
     min-height: 200px;
     border-radius: 5px;
+    box-shadow:  3px 3px 5px 1px #6a6a6a;
 }
 
 #createProject h1 {
@@ -91,7 +93,7 @@ html {
     align-items: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    min-height: 25px;
+    min-height: 40px;
     height: 10%;
 }
 
@@ -102,20 +104,65 @@ html {
     justify-content: flex-start;
     align-items: center;
     width: 70%;
-    overflow: scroll;
 }
 
 #details {
     position: absolute;
     bottom: 10px;
     left: 20px;
-    width: 500px;
-    height: 250px;
+    width: 40%;
+    min-height: 20%;
     z-index: 5;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     background: #fff;
-    border: 2px solid lightblue;
     border-radius: 5px;
+    flex-direction: column;
+    box-shadow:  3px 3px 5px 1px #6a6a6a;
+}
+
+#createStory {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: none;
+}
+
+.storyButtons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    border-top: 1px solid #fff;
+    min-height: 20px;
+    align-self: flex-end
+}
+
+.blueButton {
+    padding: 0.5em;
+    background: #495eff;
+    color: #fff;
+    font-family: 'Roboto Slab';
+    border-radius: 5px;
+    border: 2px solid #495eff;
+}
+
+.blueButton:hover {
+    background: #fff;
+    color: #495eff;
+    transition: 0.5s;
+    font-weight: bold;
+}
+
+#closeAS {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-family: 'Roboto Slab';
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    width: 25px;
+    height: 25px;
 }
