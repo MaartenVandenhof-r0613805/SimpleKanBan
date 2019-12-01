@@ -43,14 +43,13 @@ function createKanban() {
                 if (snap.val()[x] == title) childName = x;
             }
             columns.forEach(function (d) {
-                addFireData(childName, d);
+                //addFireData(childName, d);
+                firebaseRef.child("project").child(childName).push(d)
             })
         })
     }
     else {
-        
-        document.getElementById("existing").childNodes.forEach(function (x) {
-            console.log(x.selected)
+      document.getElementById("existing").childNodes.forEach(function (x) {
             if (x.selected == true) {
                 firebaseRef.child('project').on('value', snap => {
                     var childName = "";
@@ -58,14 +57,11 @@ function createKanban() {
                     for (c in allData) {
                         if (allData[c] == x.value) childName = c;
                     }
-                    console.log(childName)
-                    firebaseRef.child(childName).on('value', snap2 => {
-                        console.log(snap2.val())
+                    firebaseRef.child("project").child(childName).on('value', snap2 => {
                         for(el in snap2.val()){
                             columns.push(snap2.val()[el]);
                         }
                     })
-                    
                 })
             }
         })
@@ -90,7 +86,7 @@ function createKanban() {
             elements[i].style.width = (100 / columns.length) + "%";
         }
         document.getElementById("createStory").style.display = "flex";
-    }, 3000);
+    }, 2000);
 }
 
 function addStory() {
@@ -124,6 +120,7 @@ window.onload = function(){
     firebaseRef.child("project").on('value', snap => {
         var data = snap.val();
         for (x in data) {
+            console.log(data[x])
             var option = document.createElement("option");
             option.value = data[x];
             option.innerHTML = data[x];

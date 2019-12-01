@@ -8,6 +8,7 @@
     display: none;
     flex-direction: row;
     box-shadow:  3px 3px 5px 1px #6a6a6a;
+    overflow-x: scroll;
 }
 
 body {
@@ -28,6 +29,8 @@ html {
     width: 30%;
     display: flex;
     flex-direction: column;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
 }
 
 .column h1 {
