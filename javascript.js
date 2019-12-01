@@ -1,25 +1,30 @@
 var columns = [];
+var columnList = [];
 var firebaseRef = firebase.database().ref();
 var used = false;
+var currentBoard = "";
+var stories = [];
 
-function addFireData(child, text) {
-    if (text != null && text != "") {
-        used = false;
-        var fData = [];
-        var allData = [];
-        firebaseRef.child(child).on('value', snap => {
-            allData = snap.val();
-            for (x in allData) {
-                if (allData[x] == text) used = true;
-            }
-            if (!used) {
-                firebaseRef.child(child).push(text)
-            }
-            else {}
+//Firebase functions
+function getProjectColId(project){
+    columnList = [];
+    firebaseRef.child("project").child(project).once('value', function(data){
+        data.forEach(function(child){
+            columnList.push({
+                title: child.val().title,
+                id: child.key
+            });
         })
-    }
+    }) 
 }
 
+function getAllStories(project){
+    firebaseRef.child('project').child(project).once('value', function(data){
+        
+    })
+}
+
+//JS functions
 function addColumns() {
     var title = document.getElementById("addColumn").value;
     columns.push(title);
@@ -35,40 +40,31 @@ function addColumns() {
 function createKanban() {
     //Firebase
     var title = document.getElementById("projectName").value;
+    //If new board
     if (document.getElementById("none").selected == true) {
-        addFireData("project", title);
-        firebaseRef.child("project").on('value', snap => {
-            var childName = "";
-            for (x in snap.val()) {
-                if (snap.val()[x] == title) childName = x;
-            }
-            columns.forEach(function (d) {
-                //addFireData(childName, d);
-                firebaseRef.child("project").child(childName).push(d)
-            })
+        columns.forEach(function (d) {
+            firebaseRef.child("project").child(title).push({
+                title: d
+            });
         })
+        currentBoard = title;
     }
     else {
-      document.getElementById("existing").childNodes.forEach(function (x) {
-            if (x.selected == true) {
-                firebaseRef.child('project').on('value', snap => {
-                    var childName = "";
-                    var allData = snap.val();
-                    for (c in allData) {
-                        if (allData[c] == x.value) childName = c;
-                    }
-                    firebaseRef.child("project").child(childName).on('value', snap2 => {
-                        for(el in snap2.val()){
-                            columns.push(snap2.val()[el]);
-                        }
-                    })
-                })
+        //If board already exists
+        document.getElementById("existing").childNodes.forEach(function (x) {
+                    if (x.selected == true) {
+                        currentBoard = x.value;
+                        firebaseRef.child('project').child(x.value).once("value", function (snapshot) {
+                            snapshot.forEach(function (child) {
+                                columns.push(child.val().title);
+                            });
+                        });
             }
         })
     }
     //UI
     setTimeout(function () {
-        console.log(columns)
+        getProjectColId(currentBoard);
         document.getElementById("createProject").style.display = "none";
         document.getElementById("board").style.display = "flex";
         document.getElementById("board").innerHTML = "";
@@ -90,12 +86,28 @@ function createKanban() {
 }
 
 function addStory() {
-    var story = document.createElement("div")
-    story.className = "story";
     var title = document.getElementById("title").value;
     var desc = document.getElementById("desc").value;
-    console.log(document.getElementById("columnSelect").value)
     var col = document.getElementById(document.getElementById("columnSelect").value);
+    var colId = "";
+    columnList.forEach(function(c){
+        if(c.title == col.id){
+            colId = c.id;
+        }
+    })
+    //Firebase
+    var storyObject = {
+        title: title,
+        desc: desc,
+        column: col.id
+    }
+    
+    firebaseRef.child("project").child(currentBoard).child(colId).push(storyObject);
+    
+    //UI
+    var story = document.createElement("div")
+    story.className = "story";
+    
     
     var h2 = document.createElement("h2");
     h2.innerHTML = title;
@@ -114,16 +126,16 @@ function addStory() {
     story.appendChild(div);
     col.appendChild(story);
     document.getElementById("details").style.display = "none";
+    document.getElementById("createStory").style.display = "flex";
 }
 
 window.onload = function(){
     firebaseRef.child("project").on('value', snap => {
         var data = snap.val();
         for (x in data) {
-            console.log(data[x])
             var option = document.createElement("option");
-            option.value = data[x];
-            option.innerHTML = data[x];
+            option.value = x;
+            option.innerHTML = x;
             document.getElementById("existing").appendChild(option);
         }
     })
