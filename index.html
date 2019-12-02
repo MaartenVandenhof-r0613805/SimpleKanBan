@@ -30,8 +30,8 @@
                 <h2>Test</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae hic vero quam. Consectetur nam assumenda, natus repudiandae repellendus esse, sapiente iure delectus sunt magni quidem ullam molestias numquam neque. Minus.</p>
                 <div class="storyButtons">
-                    <button class="move">Move</button>
-                    <button class="details">Details</button>
+                    <button class="move whiteButton">Move</button>
+                    <button class="details whiteButton">Details</button>
                 </div>
             </article>
         </div>
@@ -46,8 +46,14 @@
         <select name="columnSelect" id="columnSelect">
             
         </select>
-        <button id="closeAS">X</button>
-        <button id="addStory">Add Story</button>
+        <button id="closeAS" class="closeBtn">X</button>
+        <button id="addStory" class="blueButton">Add Story</button>
+    </div>
+    <div id="moveStory">
+       <button class="closeBtn" id="closeMoveStory">X</button>
+        <h1>Move Story to Column:</h1>
+        <select name="moveToCol" id="moveToCol"></select>
+        <button class="blueButton" id="moveStoryBtn" onclick="moveStory()">Move Story</button>
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>

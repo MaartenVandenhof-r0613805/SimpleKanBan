@@ -4,6 +4,7 @@ var firebaseRef = firebase.database().ref();
 var used = false;
 var currentBoard = "";
 var stories = [];
+var isNew = true;
 
 //Firebase functions
 function getProjectColId(project){
@@ -62,9 +63,9 @@ function createKanban() {
             }
         })
     }
+    getProjectColId(currentBoard);
     //UI
     setTimeout(function () {
-        getProjectColId(currentBoard);
         document.getElementById("createProject").style.display = "none";
         document.getElementById("board").style.display = "flex";
         document.getElementById("board").innerHTML = "";
@@ -82,6 +83,10 @@ function createKanban() {
             elements[i].style.width = (100 / columns.length) + "%";
         }
         document.getElementById("createStory").style.display = "flex";
+        
+        //Display stories
+        isNew = false;
+        addStory();
     }, 2000);
 }
 
@@ -89,44 +94,121 @@ function addStory() {
     var title = document.getElementById("title").value;
     var desc = document.getElementById("desc").value;
     var col = document.getElementById(document.getElementById("columnSelect").value);
-    var colId = "";
-    columnList.forEach(function(c){
-        if(c.title == col.id){
-            colId = c.id;
+    if (isNew) {
+        var colId = "";
+        columnList.forEach(function (c) {
+                if (c.title == col.id) {
+                    colId = c.id;
+                }
+            })
+            //Firebase
+        var storyObject = {
+            title: title
+            , desc: desc
+            , column: col.id
         }
-    })
-    //Firebase
-    var storyObject = {
-        title: title,
-        desc: desc,
-        column: col.id
+        firebaseRef.child("project").child(currentBoard).child(colId).child("story").push(storyObject);
+        //UI
+        var story = document.createElement("div")
+        story.className = "story";
+        var h2 = document.createElement("h2");
+        h2.innerHTML = title;
+        var p = document.createElement("p");
+        p.innerHTML = desc;
+        var div = document.createElement("div");
+        div.classList.add("storyButtons");
+        var b1 = document.createElement("button");
+        b1.innerHTML = "Details";
+        b1.classList.add("Details");
+        b1.classList.add("whiteButton");
+        var b2 = document.createElement("button");
+        b2.innerHTML = "Move";
+        b2.classList.add("Move");
+        b2.classList.add("whiteButton");
+        b2.setAttribute("name", title)
+        b2.onclick = openMoveScreen;
+        div.appendChild(b1);
+        div.appendChild(b2);
+        story.appendChild(h2);
+        story.appendChild(p);
+        story.appendChild(div);
+        col.appendChild(story);
     }
-    
-    firebaseRef.child("project").child(currentBoard).child(colId).push(storyObject);
-    
-    //UI
-    var story = document.createElement("div")
-    story.className = "story";
-    
-    
-    var h2 = document.createElement("h2");
-    h2.innerHTML = title;
-    var p = document.createElement("p");
-    p.innerHTML = desc;
-    var div = document.createElement("div");
-    var b1 = document.createElement("button");
-    b1.innerHTML = "Details";
-    var b2 = document.createElement("button");
-    b2.innerHTML = "Move";
-    
-    div.appendChild(b1);
-    div.appendChild(b2);
-    story.appendChild(h2);
-    story.appendChild(p);
-    story.appendChild(div);
-    col.appendChild(story);
+    else {
+        columnList.forEach(function (colObj) {
+            firebaseRef.child("project").child(currentBoard).once('value', function (data) {
+                data.forEach(function (fireCol) {
+                    if (fireCol.val().title == colObj.title) {
+                        col = document.getElementById(fireCol.val().title);
+                        fireCol.forEach(function (colEl) {
+                                if (colEl.key == "story") {
+                                    colEl.forEach(function (story) {
+                                        title = story.val().title;
+                                        desc = story.val().desc;
+                                        //UI
+                                        var story = document.createElement("div")
+                                        story.className = "story";
+                                        var h2 = document.createElement("h2");
+                                        h2.innerHTML = title;
+                                        var p = document.createElement("p");
+                                        p.innerHTML = desc;
+                                        var div = document.createElement("div");
+                                        div.classList.add("storyButtons");
+                                        var b1 = document.createElement("button");
+                                        b1.innerHTML = "Details";
+                                        b1.classList.add("Details");
+                                        b1.classList.add("whiteButton");
+                                        var b2 = document.createElement("button");
+                                        b2.innerHTML = "Move";
+                                        b2.classList.add("Move");
+                                        b2.classList.add("whiteButton");
+                                        b2.setAttribute("name", colObj.title)
+                                        b2.onclick = openMoveScreen;
+                                        div.appendChild(b1);
+                                        div.appendChild(b2);
+                                        story.appendChild(h2);
+                                        story.appendChild(p);
+                                        story.appendChild(div);
+                                        col.appendChild(story);
+                                    })
+                                }
+                            })
+                    }
+                })
+            })
+        })
+        isNew = true;
+    }
     document.getElementById("details").style.display = "none";
     document.getElementById("createStory").style.display = "flex";
+}
+
+function moveStory(){
+    var targetCol = "";
+    document.getElementById("moveToCol").childNodes.forEach(function(child){
+        if(child.selected == true){
+            targetCol = child.value;
+            console.log(targetCol)
+        }
+    })
+    
+    
+    document.getElementById("moveStory").style.display = "none";
+}
+
+//Btn functions
+function openMoveScreen(){
+    document.getElementById("moveStory").style.display = "flex";
+    document.getElementById("moveToCol").innerHTML = "";
+    var name = this.name;
+    columnList.forEach(function(title){
+        if(title.title != name){
+            var option = document.createElement("option");
+            option.value = title.title;
+            option.innerHTML = title.title;
+            document.getElementById("moveToCol").appendChild(option);
+        }
+    })
 }
 
 window.onload = function(){
@@ -159,3 +241,6 @@ document.getElementById("createStory").onclick = function () {
 }
 document.getElementById("addToColumns").onclick = addColumns;
 document.getElementById("createKanban").onclick = createKanban;
+document.getElementById("closeMoveStory").onclick = function(){
+    document.getElementById("moveStory").style.display = "none";
+}
