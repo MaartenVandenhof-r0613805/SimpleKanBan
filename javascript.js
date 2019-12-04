@@ -94,6 +94,7 @@ function addStory() {
     var title = document.getElementById("title").value;
     var desc = document.getElementById("desc").value;
     var col = document.getElementById(document.getElementById("columnSelect").value);
+    var points = document.getElementById("points").value;
     if (isNew) {
         var colId = "";
         columnList.forEach(function (c) {
@@ -105,7 +106,8 @@ function addStory() {
         var storyObject = {
             title: title
             , desc: desc
-            , column: col.id
+            , column: col.id,
+            points: points
         }
         firebaseRef.child("project").child(currentBoard).child(colId).child("story").push(storyObject);
         //UI

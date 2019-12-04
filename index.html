@@ -10,7 +10,7 @@
    <div id="createProject">
        <h1>Create Project</h1>
        <h2>Existing Projects</h2>
-       <select name="existing" id="existing">
+       <select name="existing" id="existing" class="selectLayout">
            <option value="none" id="none">None</option>
        </select>
        <h2>Project Name</h2>
@@ -46,13 +46,15 @@
         <select name="columnSelect" id="columnSelect">
             
         </select>
+        <h1>Points</h1>
+        <input type="number" id="points">
         <button id="closeAS" class="closeBtn">X</button>
         <button id="addStory" class="blueButton">Add Story</button>
     </div>
     <div id="moveStory">
        <button class="closeBtn" id="closeMoveStory">X</button>
         <h1>Move Story to Column:</h1>
-        <select name="moveToCol" id="moveToCol"></select>
+        <select name="moveToCol" id="moveToCol" class="selectLayout"></select>
         <button class="blueButton" id="moveStoryBtn" onclick="moveStory()">Move Story</button>
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
