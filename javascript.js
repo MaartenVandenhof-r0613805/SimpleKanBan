@@ -152,7 +152,8 @@ function addStory() {
             title: title
             , desc: desc
             , column: col.id
-            , points: points
+            , points: points,
+            color: document.getElementById("storyColor").value
         }
         firebaseRef.child("project").child(currentBoard).child(colId).child("story").push(storyObject);
         var storyId = "";
@@ -166,6 +167,7 @@ function addStory() {
             //UI
         var story = document.createElement("div")
         story.className = "story";
+        story.style.background = document.getElementById("storyColor").value;
         var h2 = document.createElement("h2");
         h2.innerHTML = title;
         var p = document.createElement("p");
@@ -205,10 +207,11 @@ function addStory() {
                                 colEl.forEach(function (str) {
                                     title = str.val().title;
                                     desc = str.val().desc;
-                                    points = str.val().points
+                                    points = str.val().points;
                                         //UI
                                     var story = document.createElement("div")
                                     story.className = "story";
+                                    story.style.background = str.val().color;
                                     var h2 = document.createElement("h2");
                                     h2.innerHTML = title;
                                     var p = document.createElement("p");
@@ -258,10 +261,6 @@ function addStory() {
     else {
         perc = Math.round(endScore / allPoints * 100) + "%";
     }
-    console.log(perc)
-    console.log(allPoints)
-    console.log(endScore)
-    console.log(allPoints / endScore)
     progressbar.style.width = perc;
     progressPerc.innerHTML = "Progress: " + perc;
 }
@@ -286,7 +285,8 @@ function moveStory() {
                                     title: str.val().title
                                     , desc: str.val().desc
                                     , column: targetCol
-                                    , points: str.val().points
+                                    , points: str.val().points,
+                                    color: str.val().color
                                 }
                                 firebaseRef.child("project").child(currentBoard).child(coldata.key).child("story").child(storyId).remove()
                             }
