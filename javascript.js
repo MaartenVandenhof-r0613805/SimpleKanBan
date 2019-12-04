@@ -131,7 +131,7 @@ function createKanban() {
         //Display stories
         isNew = false;
         addStory();
-    }, 100);
+    }, 200);
 }
 
 function addStory() {
